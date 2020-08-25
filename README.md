@@ -17,7 +17,7 @@ conda activate polrank
 Using pip (python >=3.8 required):
 
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Basic Commands
