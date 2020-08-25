@@ -1,6 +1,6 @@
 # Ranking Policy Decisions
 
-Given a policy _p_, a default policy _d_, and some condition, this database will allow you to score states 
+Given a policy _p_, a default policy _d_, and some condition, this code will allow you to score states 
 according to how important it is to follow _p_ over _d_. If we choose _d_ to be some simple default action,
 we can understand in which states _p_ is actually useful over doing something obvious.
 
