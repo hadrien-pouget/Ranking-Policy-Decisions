@@ -4,6 +4,7 @@ import torch
 
 from elements.policies import AbstractPol
 from environments.cartpole.model import DuelDQNet
+from utils.download_weights import check_and_dwnld
 
 download_links = {
     "CartPole_good": "https://www.dropbox.com/s/4k1rxcz7bgm5pr9/CartPole_good.pth?dl=1",

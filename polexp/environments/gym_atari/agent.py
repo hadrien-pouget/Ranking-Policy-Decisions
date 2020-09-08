@@ -7,6 +7,7 @@ import torch
 from torch import optim
 
 from .model import DQN
+from utils.download_weights import check_and_dwnld
 
 def parse_args():
   parser = argparse.ArgumentParser(description='Rainbow')

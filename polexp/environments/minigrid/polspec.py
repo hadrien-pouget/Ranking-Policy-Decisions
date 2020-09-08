@@ -2,6 +2,7 @@ import os
 
 from elements.policies import AbstractPol
 import environments.minigrid.utils as mg_utils
+from utils.download_weights import check_and_dwnld
 
 download_links = {
     "good": "https://www.dropbox.com/s/b6hf9tmhpk5ms3q/minigrid_good.pt?dl=1",
