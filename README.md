@@ -7,7 +7,7 @@ Given a policy _p_, a default policy _d_, and some condition, this code will all
 according to how important it is to follow _p_ over _d_. If we choose _d_ to be some simple default action,
 we can understand in which states _p_ is actually useful over doing something obvious.
 
-## Setting Up Environment
+## Setting Up (Python) Environment
 
 Using [Anaconda](https://www.anaconda.com/) to make a new
 environment:
@@ -22,6 +22,40 @@ Using pip (python >=3.8 required):
 ```
 pip3 install -r requirements.txt
 ```
+
+## Setting Up (RL) Environments
+
+For all of them, start with:
+
+```
+pip3 install gym
+```
+#### Carpole
+For [CartPole](https://gym.openai.com/envs/CartPole-v0/), that's it!
+
+#### Minigrid
+For [Minigrid](https://github.com/maximecb/gym-minigrid):
+
+```
+pip3 install gym-minigrid
+pip3 install torch-ac
+```
+
+#### Atari Games
+For [Atari Games](https://gym.openai.com/envs/#atari):
+
+```
+pip3 install atari-py
+pip3 install gym[atari]
+```
+
+or, on windows:
+
+```
+pip3 install -f https://github.com/Kojoley/atari-py/releases atari_py
+pip3 install gym[atari]
+```
+
 
 ## Basic Commands
 
@@ -45,7 +79,7 @@ Run the experiment with:
 ```
 python3 q.py [ID]
 ```
-This will run a counting phase, in which the test suite is built, a scoring phase in which all the states are scored, and an interpolating phase, in which pruned policies are made and tested. Results will be stored in the ```results``` folder.
+First, this will download any models needed to run the experiments. Then, this will run a counting phase, in which the test suite is built, a scoring phase in which all the states are scored, and an interpolating phase, in which pruned policies are made and tested. Results will be stored in the ```results``` folder.
 
 ## Credit
 Credit for each environment and policy-training method is supplied in the README for each environment, in ```polexp/environments/```

@@ -52,6 +52,8 @@ def parse_args():
 def get_agent(name, env, device):
   args = parse_args()
   args.model = os.path.join('polexp', 'environments', 'gym_atari', name + '.pth')
+  check_and_dwnld(args.model, download_links.get(name, None))
+
   args.device = device
   # args.architecture = 'data-efficient'
   # args.hidden_size = 256

@@ -5,8 +5,14 @@ import torch
 from elements.policies import AbstractPol
 from environments.cartpole.model import DuelDQNet
 
+download_links = {
+    "CartPole_good": "https://www.dropbox.com/s/4k1rxcz7bgm5pr9/CartPole_good.pth?dl=1",
+    "CartPole_bad": "https://www.dropbox.com/s/8pw0c5p9dweg75b/CartPole_bad.pth?dl=1"
+}
+
 def get_pol(name, env, device, **kwargs):
     model_dir = os.path.join('polexp', 'environments', 'cartpole', name + '.pth')
+    check_and_dwnld(model_dir, download_links.get(name, None))
     model = DuelDQNet(env.observation_space.shape[0], env.action_space.n)
     model.load_state_dict(torch.load(model_dir, map_location=device))
     model = model.to(device)
