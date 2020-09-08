@@ -50,6 +50,17 @@ def parse_args():
   args = parser.parse_args([])
   return args
 
+download_links = {
+  "space_invaders": "https://www.dropbox.com/s/c0to2kha9qnq73b/space_invaders.pth?dl=1",
+  "seaquest": "https://www.dropbox.com/s/wjmmyiectfpdwyi/seaquest.pth?dl=1",
+  "pong": "https://www.dropbox.com/s/ql3ir5rr5qpzrzt/pong.pth?dl=1",
+  "kung_fu_master": "https://www.dropbox.com/s/ho710ew5idl23c3/kung_fu_master.pth?dl=1",
+  "chopper_command": "https://www.dropbox.com/s/rrlegfibn54gzuy/chopper_command.pth?dl=1",
+  "breakout": "https://www.dropbox.com/s/fnxil6lcqfutens/breakout.pth?dl=1",
+  "boxing": "https://www.dropbox.com/s/mi3c9bajbfd0zxw/boxing.pth?dl=1",
+  "atlantis": "https://www.dropbox.com/s/o5kb7q2m2w4n4kw/atlantis.pth?dl=1",
+}
+
 def get_agent(name, env, device):
   args = parse_args()
   args.model = os.path.join('polexp', 'environments', 'gym_atari', name + '.pth')
