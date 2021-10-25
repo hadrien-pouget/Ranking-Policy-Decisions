@@ -10,7 +10,7 @@ download_links = {
 }
 
 def get_pol(name, env, device, **kwargs):
-    model_dir = os.path.join('polexp', 'environments', 'minigrid', 'storage', name[9:])
+    model_dir = os.path.join('polrank', 'environments', 'minigrid', 'storage', name[9:])
     check_and_dwnld(os.path.join(model_dir, 'status.pt'), download_links.get(name[9:], None))
     agent = mg_utils.Agent(env.observation_space, env.action_space, model_dir, device, False, 1)
     return MinigridAgentPol(agent)

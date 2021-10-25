@@ -4,6 +4,7 @@ import os
 import argparse
 import numpy as np
 import torch
+import requests
 from torch import optim
 
 from .model import DQN
@@ -63,7 +64,20 @@ download_links = {
 
 def get_agent(name, env, device):
   args = parse_args()
-  args.model = os.path.join('polexp', 'environments', 'gym_atari', name + '.pth')
+  args.model = os.path.join('polrank', 'environments', 'gym_atari', name + '.pth')
+
+  # Download model if we can
+  # if not os.path.isfile(args.model):
+  #   if name in download_links:
+  #     print("Downloading classifier checkpoint...")
+  #     r = requests.get(download_links[name])
+  #     with open(args.model, 'wb') as f:
+  #       f.write(r.content)
+  #     print("Download complete")
+  #   else:
+  #     print("No model checkpoint found for this game, and none can be downloaded. \
+  #       Include checkpoint 'polrank/environments/gym_atari/'game_name'.pth")
+  #     exit()
   check_and_dwnld(args.model, download_links.get(name, None))
 
   args.device = device

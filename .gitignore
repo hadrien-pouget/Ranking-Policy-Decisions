@@ -145,5 +145,5 @@ cython_debug/
 
 # Project-specific
 results/*
-*.pth 
-*.pt 
+*.pth
+*.pt

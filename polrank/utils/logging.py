@@ -1,4 +1,5 @@
 import os
+import shutil
 import json
 import csv
 import pickle as pkl
@@ -10,12 +11,34 @@ import elements.conditions as conditions
 
 RESULTS_LOC = 'results'
 
+def load_sev_loggers(prefix, skip_load=True):
+    """ Load all loggers starting with 'prefix_' 
+    Skips loading actual object from config by default, so these can't 
+    be used for more experiments """
+    fls = [fl for fl in os.listdir('results') if fl.startswith('{}_'.format(prefix))]
+    loggers = [Logger(fl) for fl in fls]
+    for logger in loggers:
+        logger.load_config({'skip_load': skip_load})
+        logger.load_results()
+    return loggers
+
 class Logger():
     """ Keeps track of all important data, including hyperparameters and results.
     Provides methods for saving and loading these, as well as updating them. """
-    def __init__(self, fileloc):
+    def __init__(self, fileloc, load_loc=None):
         self.fileloc = os.path.join(RESULTS_LOC, fileloc)
-        os.makedirs(self.fileloc, exist_ok=True)
+
+        if load_loc is not None and os.path.isdir(self.fileloc):
+            print("Trying to load config from a previous run, but {} already exists.".format(self.fileloc))
+            exit()
+        else:
+            os.makedirs(self.fileloc, exist_ok=True)
+
+        # Copy over config from load location, if provided
+        if load_loc is not None:
+            load_loc = os.path.join(RESULTS_LOC, load_loc)
+            shutil.copyfile(os.path.join(load_loc, 'config.json'), os.path.join(self.fileloc, 'config.json'))
+            print("Config successfully copied from {}".format(load_loc))
 
         self.data = {
             'counts': [None, 'json'], # {state: [ep, np, ef, nf]}
@@ -227,3 +250,8 @@ class Logger():
             self.data['logs'][0] = nlog
         else:
             self.data['logs'][0].update(nlog)
+
+    def update_cond(self, new_cond_name):
+        self.config.update({'cond_name': new_cond_name})
+        self.config['cond'] = conditions.get_cond(self.config['cond_name'])
+        self.dump_config()

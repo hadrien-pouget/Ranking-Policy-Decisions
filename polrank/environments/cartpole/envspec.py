@@ -60,23 +60,10 @@ def cartpole_abs_func(n=-1):
             abs(round(state[3], 1))])
 
 ### Visualisation ###
-def cartpole_get_RGB(env, state, action, mut):
+def cartpole_get_RGB(env, state, action, mut, score):
     frame = env.render(mode='rgb_array')
     frame = Image.fromarray(frame)
     return frame
-
-# Old visualisation code
-# def cartpole_get_RGB_mut(env, state, action, mut):
-#     frame = cartpole_get_RGB(env, state, action, mut)
-#     draw = ImageDraw.Draw(frame)
-#     txt = 'Mut' if mut else 'Normal'
-#     draw.text((200, 200), txt, fill='rgb(0,0,0)')
-#     if action is not None:
-#         act = '<--' if action == 0 else '-->'
-#     else:
-#         act = ''
-#     draw.text((200, 220), act, fill='rgb(0,0,0)')
-#     return frame
 
 def arrow_coords(x, y, l, w, drct):
     if drct == "left":
@@ -95,7 +82,7 @@ def arrow_coords(x, y, l, w, drct):
     return coords
 
 def cartpole_get_RGB_mut(env, state, action, mut, score, do_scale=False, crop=True):
-    frame = cartpole_get_RGB(env, state, action, mut)
+    frame = cartpole_get_RGB(env, state, action, mut, score)
     draw = ImageDraw.Draw(frame)
     drct = "right" if action == 1 else "left"
     col = 'rgb(255,0,0)' if not mut else 'rgb(0,0,255)'

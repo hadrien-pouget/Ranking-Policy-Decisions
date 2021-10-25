@@ -64,6 +64,8 @@ def interpolate_policies(env, pol, pol_d, cond, rankings, score_types, n_inc, n_
             chks.append(np.mean(passes))
             mut_ps.append(np.mean(mut_props))
             n_muts.append(np.mean(not_muts))
+            # print("Done interpolation with {}/{} mutations".format(i, len(state_ranking)),
+            #     end='\r' if i < len(state_ranking) else '\n')
 
         results[st] = inds, avgs, vrs, chks, mut_ps, n_muts
 

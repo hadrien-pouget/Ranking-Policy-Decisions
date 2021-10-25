@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
 import random
 
-from elements.envs import GYM_SHORTCUTS
+from elements.envs import atari_games
+from elements.envs import atari_games_clean
 
-ALL_POLS = ['lazy', 'donoth', 'random', 'minigrid_good', 'minigrid_lava', 'CartPole_good', 'CartPole_bad'] \
-    + list(GYM_SHORTCUTS.keys()) \
-    + list(GYM_SHORTCUTS.values())
+ALL_POLS = ['lazy', 'donoth', 'random', 'minigrid_good', 'minigrid_lava', 'CartPole_good', 'CartPole_bad']  + \
+    ['UBER' + game for game in atari_games_clean] + \
+    ['GYM'  + game for game in atari_games]
 
 def get_pol(name, env, device, **kwargs):
     if name == 'lazy':
@@ -18,9 +19,11 @@ def get_pol(name, env, device, **kwargs):
     if name[:8] == 'minigrid':
         from environments.minigrid.polspec import get_pol as getter
     elif name[:3] == 'GYM':
-        name = GYM_SHORTCUTS.get(name, name)
         name = name[3:]
         from environments.gym_atari.polspec import get_pol as getter
+    elif name[:4] == 'UBER':
+        name = name[4:]
+        from environments.uber_gym.polspec import get_pol as getter
     elif name[:8] == 'CartPole':
         from environments.cartpole.polspec import get_pol as getter
     else:

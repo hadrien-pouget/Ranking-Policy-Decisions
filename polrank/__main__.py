@@ -1,4 +1,5 @@
 import random
+import json
 
 import numpy as np
 import torch
@@ -23,28 +24,12 @@ def main():
         torch.backends.cudnn.benchmark = False
 
     ### Logger setup ###
-    logger = Logger(args.fileloc)
+    logger = Logger(args.fileloc, args.load_loc)
     logger.init_config(args)
     logger.load_results()
 
     ### If we're making a visualisation, branch here ###
     if args.task == 'vis':
-        if False:
-            import imageio
-            import os
-            env = logger.config['env']
-            state = env.reset()
-            for _ in range(20):
-                state, _, _, _ = env.step(0)
-            env.vis_type = -1
-            rgb = env.get_RGB(env, state, None, None)
-            raw_abst = env.abst(rgb)
-            import pdb; pdb.set_trace()
-            env.vis_type = 0
-            abst = env.get_RGB(env, state, None, None)
-            imageio.imsave(os.path.join(logger.fileloc, 'pong_rgb.png'), rgb)
-            imageio.imsave(os.path.join(logger.fileloc, 'pong_abs.png'), abst)
-            exit()
         if args.ranking not in logger.data['scores'][0]:
             print("\nNeed to compute ranking {} before doing visualisation!".format(args.ranking))
             exit()
@@ -75,7 +60,7 @@ def main():
         N = args.more_count
         print("\n----- Additional Counts ({} more runs) -----\n".format(N))
 
-        # If we're adding more counts without have run before, then we need to reset the
+        # If we're adding more counts without having run before, then we need to reset the
         # env or we would be revisiting the same states because of the seed.
         if not counts_do['redo']:
             for _ in range(logger.config['n_runs']):
@@ -128,33 +113,11 @@ def main():
         logger.dump_config()
 
     ### Display results ###
-    # Main results
-    if logger.config['env_name'].startswith('GYM'):
-        from elements.envs import GYM_SHORTCUTS
-        game = GYM_SHORTCUTS[logger.config['env_name']][3:]
-        offsets = {
-            'atlantis': 7656.0,
-            'breakout': 1.47,
-            'pong': -12.77,
-            'space_invaders': 142.8,
-            'kung_fu_master': 221.0,
-            'boxing': -1.84,
-            'seaquest': 58.4,
-            'chopper_command': 581.0,
-        }
-        draw_interpol_results(logger, logger.config['score_types'], 0, [1], x_fracs=True, y_fracs=True, smooth=False,
-            x_name='States Restored (%)', y_names=['Original Reward (%)'], combine_sbfl=True,
-            y_offset=offsets[game])
-        draw_interpol_results(logger, logger.config['score_types'], 4, [1], y_fracs=True,
-            trans_x=lambda x: 1-x, x_name="Policy's Action Taken (% of Steps)",
-            y_names=['Original Reward (%)'], smooth=False, combine_sbfl=True,
-            y_offset=offsets[game])
-    else:
-        draw_interpol_results(logger, logger.config['score_types'], 0, [1], x_fracs=True, y_fracs=True, smooth=False,
-            x_name='States Restored (%)', y_names=['Original Reward (%)'], combine_sbfl=True)
-        draw_interpol_results(logger, logger.config['score_types'], 4, [1], y_fracs=True,
-            trans_x=lambda x: 1-x, x_name="Policy's Action Taken (% of Steps)",
-            y_names=['Original Reward (%)'], smooth=False, combine_sbfl=True)
+    draw_interpol_results(logger, logger.config['score_types'], 0, [1], x_fracs=True, y_fracs=True, smooth=False,
+        x_name='States Restored (%)', y_names=['Original Reward (%)'], combine_sbfl=True)
+    draw_interpol_results(logger, logger.config['score_types'], 4, [1], y_fracs=True,
+        trans_x=lambda x: 1-x, x_name="Policy's Action Taken (% of Steps)",
+        y_names=['Original Reward (%)'], smooth=False, combine_sbfl=True)
 
 if __name__ == '__main__':
     main()

@@ -39,8 +39,10 @@ def env_with_frame_proc(env, pol, pol_d, cond, ranking, n_not_mut, get_failure=F
         run_env_with(env, pol, stats)
         succ = stats.get_stats()[1]
         cont = False or (get_failure and succ) or (get_success and not succ)
-    env.close()
-    return stats.get_stats()
+    try:    
+        env.close()
+    finally:
+        return stats.get_stats()
 
 def save_vis(fileloc, results, score_type, n_not_mut, seed):
     seed = str(seed) if seed is not None else ''

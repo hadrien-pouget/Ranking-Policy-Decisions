@@ -6,6 +6,8 @@ def get_cond(name):
         if name[5:7] == 'gt':
             score = float(name[7:])
             return score_based(score, True)
+        elif name[5:] == '_auto':
+            return lambda x, y, z: True
         else:
             score = float(name[5:])
             return score_based(score, False)

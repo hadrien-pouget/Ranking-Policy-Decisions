@@ -12,7 +12,7 @@ download_links = {
 }
 
 def get_pol(name, env, device, **kwargs):
-    model_dir = os.path.join('polexp', 'environments', 'cartpole', name + '.pth')
+    model_dir = os.path.join('polrank', 'environments', 'cartpole', name + '.pth')
     check_and_dwnld(model_dir, download_links.get(name, None))
     model = DuelDQNet(env.observation_space.shape[0], env.action_space.n)
     model.load_state_dict(torch.load(model_dir, map_location=device))
